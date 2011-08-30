@@ -18,42 +18,15 @@ function SimplyDB(accessKey, secret) {
 	}
 	
 	this.createDomain = function(callback, domain) {
-		if(arguments.length < 2) {
-			throw 'Must provide a DomainName';
-		}
-		if(reg.domain.test(domain) === false) {
-			throw 'Invalid DomainName provided';
-		}
-		makeRequest({
-			Action: 'CreateDomain',
-			DomainName: domain
-		}, callback);
+		return domainRequest(callback, 'CreateDomain', domain);
 	};
 	
 	this.deleteDomain = function(callback, domain) {
-		if(arguments.length < 2) {
-			throw 'Must provide a DomainName';
-		}
-		if(reg.domain.test(domain) === false) {
-			throw 'Invalid DomainName provided';
-		}
-		makeRequest({
-			Action: 'CreateDomain',
-			DomainName: domain
-		}, callback);
+		return domainRequest(callback, 'DeleteDomain', domain);
 	};
 	
 	this.domainMetadata = function(callback, domain) {
-		if(arguments.length < 2) {
-			throw 'Must provide a DomainName';
-		}
-		if(reg.domain.test(domain) === false) {
-			throw 'Invalid DomainName provided';
-		}
-		makeRequest({
-			Action: 'DeleteDomain',
-			DomainName: domain
-		}, callback);
+		return domainRequest(callback, 'DomainMetadata', domain);
 	};
 	
 	this.listDomains = function(callback, max /* = 100 */, nextToken /* = '' */) {
@@ -80,6 +53,19 @@ function SimplyDB(accessKey, secret) {
 		return (date.getUTCFullYear() + '-' + (1 + date.getUTCMonth()) + '-' + (1 + date.getDate()) + 'T' + date.getUTCHours() + ':' + date.getUTCMinutes() + ':' + date.getUTCSeconds() + 'Z').replace(/\D\d{1}\D/g, function(a) {	
 			return a[0] + '0' + a.slice(1);
 		});
+	}
+	
+	function domainRequest(callback, action, domain) {
+		if(domain === undefined) {
+			throw 'Must provide a DomainName';
+		}
+		if(reg.domain.test(domain) === false) {
+			throw 'Invalid DomainName provided';
+		}
+		makeRequest({
+			Action: action,
+			DomainName: domain
+		}, callback);
 	}
 	
 	function makeRequest(params, callback, method /* = GET */) {
