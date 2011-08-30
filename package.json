@@ -1,0 +1,18 @@
+{
+	"author": "Timothy J. Marshall <timothyjmarshall@gmail.com> (http://timothyjmarshall.com)",
+	"name": "simplydb",
+	"description": "A wrapper for Amazon SimpleDB",
+	"version": "0.0.1",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/tmarshall/simplydb.git"
+	},
+	"main": "simplydb",
+	"engines": {
+		"node": "*"
+	},
+	"licenses": {
+		"type": "MIT",
+		"url": "http://github.com/tmarshall/simplydb/raw/master/LICENSE"
+	}
+}
