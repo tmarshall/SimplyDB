@@ -5,7 +5,10 @@ var
 function SimplyDB(accessKey, secret) {
 	var 
 		client,
-		dateOffset = null;
+		dateOffset = null,
+		reg = {
+			domain: /^[a-zA-Z0-9_-\.]+$/
+		};
 	
 	if(accessKey === undefined) {
 		throw 'No Access Key given';
@@ -13,6 +16,45 @@ function SimplyDB(accessKey, secret) {
 	if(secret === undefined) {
 		throw 'No Secret Key given';
 	}
+	
+	this.createDomain = function(callback, domain) {
+		if(arguments.length < 2) {
+			throw 'Must provide a DomainName';
+		}
+		if(reg.domain.test(domain) === false) {
+			throw 'Invalid DomainName provided';
+		}
+		makeRequest({
+			Action: 'CreateDomain',
+			DomainName: domain
+		}, callback);
+	};
+	
+	this.deleteDomain = function(callback, domain) {
+		if(arguments.length < 2) {
+			throw 'Must provide a DomainName';
+		}
+		if(reg.domain.test(domain) === false) {
+			throw 'Invalid DomainName provided';
+		}
+		makeRequest({
+			Action: 'CreateDomain',
+			DomainName: domain
+		}, callback);
+	};
+	
+	this.domainMetadata = function(callback, domain) {
+		if(arguments.length < 2) {
+			throw 'Must provide a DomainName';
+		}
+		if(reg.domain.test(domain) === false) {
+			throw 'Invalid DomainName provided';
+		}
+		makeRequest({
+			Action: 'DeleteDomain',
+			DomainName: domain
+		}, callback);
+	};
 	
 	this.listDomains = function(callback, max /* = 100 */, nextToken /* = '' */) {
 		if(arguments.length > 1 && (+max < 1 || +max > 100)) {
