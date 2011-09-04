@@ -17,20 +17,30 @@ function SimplyDB(accessKey, secret) {
 		throw 'No Secret Key given';
 	}
 	
-	this.createDomain = function(callback, domain) {
-		return domainRequest(callback, 'CreateDomain', domain);
+	this.createDomain = function(domain, callback) {
+		return domainRequest('CreateDomain', domain, callback);
 	};
 	
-	this.deleteDomain = function(callback, domain) {
-		return domainRequest(callback, 'DeleteDomain', domain);
+	this.deleteDomain = function(domain, callback) {
+		return domainRequest('DeleteDomain', domain, callback);
 	};
 	
-	this.domainMetadata = function(callback, domain) {
-		return domainRequest(callback, 'DomainMetadata', domain);
+	this.domainMetadata = function(domain, callback) {
+		return domainRequest('DomainMetadata', domain, callback);
 	};
 	
-	this.listDomains = function(callback, max /* = 100 */, nextToken /* = '' */) {
-		if(arguments.length > 1 && (+max < 1 || +max > 100)) {
+	this.listDomains = function(a, b, c /* callback || nextToken, callback || nextToken, max, callback */) {
+		if(a === undefined) {
+			throw 'No callback given';
+		}
+		
+		var
+			argLen = arguments.length,
+			callback = arguments[argLen - 1],
+			nextToken = argLen >= 2 ? a : '',
+			max = argLen >= 3 ? +b : 100;
+		
+		if(max < 1 || max > 100) {
 			throw 'Invalid MaxNumberOfDomains given';
 		}
 		makeRequest({
@@ -40,12 +50,25 @@ function SimplyDB(accessKey, secret) {
 		}, callback);
 	};
 	
-	this.select = function(callback, query, nextToken /* = '' */, consistent /* = true */) {
+	this.select = function(query, b, c, d /* query, callback || query, nextToken, callback || query, nextToken, consistent, callback */) {
+		if(query === undefined) {
+			throw 'No query given';
+		}
+		else if(b === undefined) {
+			throw 'No callback given';
+		}
+		
+		var
+			argLen = arguments.length,
+			callback = arguments[argLen - 1],
+			nextToken = argLen >= 3 ? b : '',
+			consistent = argLen >= 4 ? c : true;
+		
 		makeRequest({
 			Action: 'Select',
 			SelectExpression: query,
 			NextToken: nextToken,
-			ConsistentRead: arguments.length > 3 ? consistent : true
+			ConsistentRead: consistent
 		}, callback);
 	};
 	
@@ -55,7 +78,7 @@ function SimplyDB(accessKey, secret) {
 		});
 	}
 	
-	function domainRequest(callback, action, domain) {
+	function domainRequest(action, domain, callback) {
 		if(domain === undefined) {
 			throw 'Must provide a DomainName';
 		}
@@ -68,7 +91,7 @@ function SimplyDB(accessKey, secret) {
 		}, callback);
 	}
 	
-	function makeRequest(params, callback, method /* = GET */) {
+	function makeRequest(params, b, c */ params, callback || params, method, callback */) {
 		var
 			keys,
 			str,
@@ -77,9 +100,10 @@ function SimplyDB(accessKey, secret) {
 			parts = [],
 			queryStr,
 			sig,
-			tmp;
+			tmp,
+			method = c === undefined ? 'GET' : b,
+			callback = c === undefined ? b : c;
 		
-		method = method || 'GET';
 		params.Timestamp = datetimeISO8601(new Date());
 		params.AWSAccessKeyId = accessKey;
 		params.Version = '2009-04-15';
