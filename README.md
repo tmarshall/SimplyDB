@@ -1,6 +1,4 @@
 SimplyDB 0.0.1
-
-It's a WIP
 ============
 
 ## What's SimplyDB?
