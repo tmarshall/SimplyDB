@@ -7,7 +7,8 @@ function SimplyDB(accessKey, secret) {
 		client,
 		dateOffset = null,
 		reg = {
-			domain: /^[a-zA-Z0-9_\-\.]+$/
+			domain: /^[a-zA-Z0-9_\-\.]+$/,
+			datetime: /\D\d(?!\d)/g
 		};
 	
 	if(accessKey === undefined) {
@@ -73,7 +74,7 @@ function SimplyDB(accessKey, secret) {
 	};
 	
 	function datetimeISO8601(date) {
-		return (date.getUTCFullYear() + '-' + (1 + date.getUTCMonth()) + '-' + (1 + date.getDate()) + 'T' + date.getUTCHours() + ':' + date.getUTCMinutes() + ':' + date.getUTCSeconds() + 'Z').replace(/\D\d{1}\D/g, function(a) {	
+		return (date.getUTCFullYear() + '-' + (1 + date.getUTCMonth()) + '-' + (1 + date.getDate()) + 'T' + date.getUTCHours() + ':' + date.getUTCMinutes() + ':' + date.getUTCSeconds() + 'Z').replace(reg.datetime, function(a, b) {	
 			return a[0] + '0' + a.slice(1);
 		});
 	}
@@ -127,10 +128,6 @@ function SimplyDB(accessKey, secret) {
 			.update(method + '\nsdb.amazonaws.com\n/\n' + queryStr)
 			.digest('base64');
 		queryStr += '&Signature=' + urlEncode(sig);
-		
-		console.log(queryStr);
-		console.log(params.Timestamp);
-		console.log(sig);
 		
 		https[method.toLowerCase()]({
 			host: 'sdb.amazonaws.com',
