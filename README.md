@@ -59,6 +59,7 @@ sdbClient.listDomains('abcd', 10, function(err, response) {});
 ```
 
 The next token defaults to ''
+
 The max number of domains defaults to 100
 
 ## Selecting
@@ -77,5 +78,7 @@ sdbClient.select('SELECT * FROM MyDomain', 'abcd', true, function(err, response)
 ```
 
 The next token defaults to ''
+
 The consistency defaults to true
+
 ***Important!*** The consistency defaults to true, meaning that queries ensure that the data returned is up-to-date. If consistency is set to false there is a chance that a query will return stale data from a server that has yet to be updated. Ensuring consistency does add a bit of overhead to each query. If you are worried about speed and cost, and are okay with the chance of encountering stale data then you might want to set consistency to false.
