@@ -146,7 +146,7 @@ sdbClient.deleteAttributes('TV_Shows', 'Lost', {
 // batching your deletes
 sdbClient.batchDeleteAttributes('TV_Shows', {
 	'Arrested Development': {},
-	'The IT Crowd: {
+	'The IT Crowd': {
 		Cast: {
 			Value: ['Noel Fielding', 'Chris Morris']
 		}
@@ -158,6 +158,8 @@ sdbClient.batchDeleteAttributes('TV_Shows', {
 	}
 }, function(err, response) {});
 ```
+
+Note that you can't use Exists and Expected in batched deletes.
 
 ## Selecting
 
