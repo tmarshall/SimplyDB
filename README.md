@@ -62,6 +62,103 @@ The next token defaults to ''
 
 The max number of domains defaults to 100
 
+## Putting Attributes
+
+You can use .putAttributes for single items or .batchPutAttributes for multiple items from the same domain (limited, by Amazon, to 25 items per batch).
+
+When batching you can only put to a single domain.
+
+```javascript
+// a typical put
+sdbClient.putAttributes('TV_Shows', 'Dexter', {
+	Genre: {
+		Value: 'Drama'
+	},
+	Season: {
+		Value: 6,
+		Replace: true
+	}
+}, function(err, response) {});
+
+// a bit more specific
+sdbClient.putAttributes('TV_Shows', 'Misfits', {
+	Genre: {
+		Value: ['Drama', 'Comedy'],
+		Replace: true,
+		Exists: true
+	},
+	Season: {
+		Value: 2,
+		Replace: true,
+		Expected: 1
+	}
+});
+
+// batching your puts
+sdbClient.batchPutAttributes('TV_Shows', {
+	'How I Met Your Mother': {
+		Season: {
+			Value: 7
+		}
+	},
+	Community: {
+		Season: {
+			Value: 3
+		}
+	},
+	'Parks and Recreation: {
+		Season: {
+			Value: 4,
+			Replace: true
+		}
+	}
+});
+```
+
+Note that you can't use Exists and Expected in batched puts.
+
+## Deleting Attributes
+
+As with putting, there are two ways in which you can delete attributes. Using .deleteAttributes and .batchDeleteAttributes.
+
+```javascript
+// a typical delete
+sdbClient.deleteAttributes('TV_Shows', 'Lost', {
+	Network: {
+		Value: 'ABC'
+	}
+}, function(err, response) {});
+
+// deleting all attributes for an item, which will effectively remove the item
+sdbClient.deleteAttributes('TV_Shows', 'Lost', function(err, response) {});
+
+// a bit more specific
+sdbClient.deleteAttributes('TV_Shows', 'Lost', {
+	Smoke: {
+		Expected: 'Monster'
+	},
+	Cast: {
+		Values: ['Michelle Rodriguez', 'Cynthia Watros'],
+		Exists: true
+	}
+}, function(err, response) {});
+
+// batching your deletes
+sdbClient.batchDeleteAttributes('TV_Shows', {
+	'Arrested Development': {},
+	'The IT Crowd: {
+		Cast: {
+			Value: ['Noel Fielding', 'Chris Morris']
+		}
+	},
+	Dexter: {
+		Cast: {
+			Value: 'Erik King'
+		}
+	}
+}, function(err, response) {});
+```
+
 ## Selecting
 
 Selecting from a domain also has a few different ways to pass arguments.
