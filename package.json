@@ -9,7 +9,7 @@
 	},
 	"main": "simplydb",
 	"engines": {
-		"node": "*"
+		"node": "node (>=0.4.11)"
 	},
 	"licenses": {
 		"type": "MIT",
