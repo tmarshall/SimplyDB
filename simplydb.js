@@ -7,7 +7,7 @@ function SimplyDB(accessKey, secret) {
 		client,
 		dateOffset = null,
 		reg = {
-			domain: /^[a-zA-Z0-9_-\.]+$/
+			domain: /^[a-zA-Z0-9_\-\.]+$/
 		};
 	
 	if(accessKey === undefined) {
@@ -91,7 +91,7 @@ function SimplyDB(accessKey, secret) {
 		}, callback);
 	}
 	
-	function makeRequest(params, b, c */ params, callback || params, method, callback */) {
+	function makeRequest(params, b, c /* params, callback || params, method, callback */) {
 		var
 			keys,
 			str,
