@@ -11,8 +11,8 @@
 	"engines": {
 		"node": ">=0.4.11"
 	},
-	"licenses": {
+	"licenses": [{
 		"type": "MIT",
 		"url": "http://github.com/tmarshall/SimplyDB/raw/master/LICENSE"
-	}
+	}]
 }
