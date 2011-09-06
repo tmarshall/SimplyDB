@@ -106,7 +106,7 @@ sdbClient.batchPutAttributes('TV_Shows', {
 			Value: 3
 		}
 	},
-	'Parks and Recreation: {
+	'Parks and Recreation': {
 		Season: {
 			Value: 4,
 			Replace: true
