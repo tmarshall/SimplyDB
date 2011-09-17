@@ -9,6 +9,10 @@ SimplyDB is an Amazon [SimpleDB](http://aws.amazon.com/simpledb/) module for Nod
 
 SimplyDB requires two modules. Those being crypto and https.
 
+## Installation
+
+The easiest way to install SimplyDB is to use [npm](http://npmjs.org) by executing `npm install simplydb` in terminal.
+
 ## Connecting to SimpleDB
 
 Connecting to SimpleDB takes place when initializing a new instance of the module.

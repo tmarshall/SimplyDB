@@ -223,7 +223,8 @@ function SimplyDB(accessKey, secret) {
 			sig,
 			tmp,
 			method = c === undefined ? 'GET' : b,
-			callback = c === undefined ? b : c;
+			callback = c === undefined ? b : c,
+			chunks = [];
 		
 		params.Timestamp = datetimeISO8601(new Date());
 		params.AWSAccessKeyId = accessKey;
@@ -260,7 +261,15 @@ function SimplyDB(accessKey, secret) {
 			method: method
 		}, function(res) {
 			res.on('data', function(data) {
-				callback(null, data.toString('utf-8'));
+				chunks.push(data.toString('utf-8'));
+			});
+			
+			res.on('end', function() {
+				callback(null, chunks.join(''));
+			});
+			
+			res.on('close', function() {
+				res.emit('end');
 			});
 		});
 		req.end();
