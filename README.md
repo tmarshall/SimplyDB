@@ -1,4 +1,4 @@
-SimplyDB 1.0
+SimplyDB 1.0.1
 ============
 
 ## What's SimplyDB?
